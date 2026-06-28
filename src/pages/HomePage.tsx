@@ -2,7 +2,9 @@
 
 const HomePage = () => {
   return (
-    <div>HomePage</div>
+    <div>
+      <button className="btn btn-primary">Test DaisyUI</button>
+    </div>
   )
 }
 
