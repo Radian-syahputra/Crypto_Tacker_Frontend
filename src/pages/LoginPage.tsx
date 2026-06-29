@@ -64,7 +64,7 @@ const LoginPage = () => {
             <button className="btn btn-primary w-full" disabled={isLoading}>
               {isLoading ? (<span className="loading loading-bars loading-md"></span>) : "Login"}
             </button>
-            <span>Sudah Belum Punya Akun? {' '}
+            <span>Belum Punya Akun? {' '}
               <Link to={'/register'} className="text-sm text-blue-500 underline">Register</Link>
             </span>
           </form>
