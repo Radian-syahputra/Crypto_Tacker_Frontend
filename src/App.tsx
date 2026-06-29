@@ -1,7 +1,9 @@
+// App.tsx
+import { Toaster } from 'react-hot-toast'
 
 const App = () => {
   return (
-    <div>App</div>
+    <Toaster position="top-right" />
   )
 }
 
