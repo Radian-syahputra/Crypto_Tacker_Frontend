@@ -6,6 +6,8 @@ import FavoritePage from "../pages/FavoritePage";
 import CoinDetailPage from "../pages/CoinDetailPage";
 import ProfilePage from "../pages/ProfilePage";
 import MainLayout from "../layouts/MainLayout";
+import ProtectedRoute from "../components/ProtectedRoute";
+import GuestRoute from "../components/GuestRoute";
 
 const router = createBrowserRouter([
   {
@@ -13,13 +15,27 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       { path: "/", element: <HomePage /> },
-      { path: "/favorite", element: <FavoritePage /> },
+
+      // Protect Route
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { path: "/favorite", element: <FavoritePage /> },
+          { path: "/profile", element: <ProfilePage /> },
+        ],
+      },
+
       { path: "/coin/:id", element: <CoinDetailPage /> },
-      { path: "/profile", element: <ProfilePage /> },
     ],
   },
-  { path: "/login", element: <LoginPage /> },
-  { path: "/register", element: <RegisterPage /> },
+
+  {
+    element: <GuestRoute />,
+    children: [
+      { path: "/login", element: <LoginPage /> },
+      { path: "/register", element: <RegisterPage /> },
+    ],
+  },
 ]);
 
 export default router;
