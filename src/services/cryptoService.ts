@@ -3,7 +3,7 @@ import api from "./api";
 
 export const getCoinList = async (page : number = 1) => {
     const response = await api.get(`/crypto/coins`, {
-        params : {  page}
+        params : { page}
     })
     return response.data
 }
