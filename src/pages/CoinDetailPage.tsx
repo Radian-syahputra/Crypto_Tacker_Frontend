@@ -1,13 +1,34 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCoinDetail } from "../services/cryptoService";
-import type { CoinDetail } from "../types";
+import type { CoinDetail, Favorite } from "../types";
+import { addFavorite, getFavoriteList, removeFavorite } from "../services/favoriteService";
+import toast from "react-hot-toast";
 
 const CoinDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [coin, setCoin] = useState<CoinDetail | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const [isFavorite, setIsFavorite] = useState(false)
+
+
+  useEffect(() => {
+    const checkFavorite = async () => {
+      try {
+        const response = await getFavoriteList()
+
+         const found = response.data.some((fav : Favorite) => fav.coinId === id)
+        setIsFavorite(found)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    checkFavorite()
+  }, [id])
+
 
   useEffect(() => {
     const fetchCoin = async () => {
@@ -38,6 +59,24 @@ const CoinDetailPage = () => {
     if (value === undefined || value === null) return "text-base-content";
     return value > 0 ? "text-success" : value < 0 ? "text-error" : "text-base-content";
   };
+
+  const handleToggleFavorite = async () => {
+    if(!id) return
+
+    try {
+      if(isFavorite){
+        await removeFavorite(id)
+        setIsFavorite(false)
+        toast.success("Berhasil DIhapus Dari Favorite")
+      }else {
+        await addFavorite(id)
+        setIsFavorite(true)
+        toast.success("Berhasil Menambahkan Ke Favorite")
+      }
+    } catch (error) {
+      toast.error('Gagal Mengubah Favorite')
+    }
+  }
 
   return (
     <div className="min-h-screen bg-base-200 px-4 py-8">
@@ -82,6 +121,10 @@ const CoinDetailPage = () => {
                     <p className={`mt-2 text-sm font-semibold ${getTrendClass(coin.market_data.price_change_percentage_24h)}`}>
                       {formatPercent(coin.market_data.price_change_percentage_24h)} 24 jam
                     </p>
+
+                    <button className={`btn btn-sm mt-3 ${isFavorite ? 'btn-error' : 'btn-primary'}`} onClick={handleToggleFavorite}>
+                      {isFavorite ? 'Remove From Favorite' : 'Add To Favorite'}
+                    </button>
                   </div>
                 </div>
               </div>

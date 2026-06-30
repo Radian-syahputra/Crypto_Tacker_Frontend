@@ -38,3 +38,7 @@ export interface CoinDetail {
         en : string
     }
 }
+
+export interface Favorite {
+  coinId: string
+}
