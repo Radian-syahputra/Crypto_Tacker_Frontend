@@ -13,7 +13,7 @@ interface AuthState {
 
 const useAuthStore = create<AuthState>((set) => ({
     user : null,
-    isLoading : false,
+    isLoading : true,
 
     setUser : (user) => set({user}),
     clearUser : () => set({user : null}),

@@ -1,17 +1,13 @@
 import useAuthStore from "../store/authStore"
 import { Navigate, Outlet } from "react-router-dom"
 
-
 const GuestRoute = () => {
-    const {user} = useAuthStore()
+  const { user, isLoading } = useAuthStore()
 
-    if(user) {
-        return <Navigate to={'/'}/>
-    }
+  if (isLoading) return <div>Loading...</div>  // ← tunggu dulu!
+  if (user) return <Navigate to='/' />
 
-  return (
-    <Outlet/>
-  )
+  return <Outlet />
 }
 
 export default GuestRoute
